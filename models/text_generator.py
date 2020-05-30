@@ -1,3 +1,4 @@
+import os
 import torch
 import numpy as np
 
@@ -8,8 +9,9 @@ device = 'cpu'
 if torch.cuda.is_available():
     device = 'cuda'
 
-tokenizer = GPT2Tokenizer.from_pretrained('gpt2-medium')
-model = GPT2LMHeadModel.from_pretrained('gpt2-medium')
+GPT2_NAME = os.getenv('GPT2_NAME', 'gpt-medium')
+tokenizer = GPT2Tokenizer.from_pretrained(GPT2_NAME)
+model = GPT2LMHeadModel.from_pretrained(GPT2_NAME)
 model = model.to(device)
 EOD_ID = tokenizer.encode("<|endoftext|>")
 
