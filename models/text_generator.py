@@ -9,7 +9,7 @@ device = 'cpu'
 if torch.cuda.is_available():
     device = 'cuda'
 
-GPT2_NAME = os.getenv('GPT2_NAME', 'gpt-medium')
+GPT2_NAME = os.getenv('GPT2_NAME', 'gpt2-medium')
 tokenizer = GPT2Tokenizer.from_pretrained(GPT2_NAME)
 model = GPT2LMHeadModel.from_pretrained(GPT2_NAME)
 model = model.to(device)
@@ -20,14 +20,16 @@ def generate_some_text(input_str, text_len=250, end_of_text_id=EOD_ID, top_rando
   model.eval()
   with torch.no_grad():
     for i in tqdm(range(text_len)):
-      outputs = model(cur_ids, labels=cur_ids)
+      try:
+        outputs = model(cur_ids[:, -1024:], labels=cur_ids[:, -1024:])
+      except:
+        import ipdb; ipdb.set_trace()
       loss, logits = outputs[:2]
       softmax_logits = torch.softmax(logits[0,-1], dim=0)
       next_token_id = choose_from_top(softmax_logits.to('cpu').numpy(), n=top_random)
       if next_token_id == end_of_text_id:
           break
       cur_ids = torch.cat([cur_ids, torch.ones((1,1)).long().to(device) * next_token_id], dim=1)
-
     output_list = list(cur_ids.squeeze().to('cpu').numpy())
     output_text = tokenizer.decode(output_list)
     print(output_text)
