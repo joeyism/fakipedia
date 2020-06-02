@@ -3,3 +3,4 @@ tqdm
 torch
 pijnu
 mediawiki-parser
+dataclasses
