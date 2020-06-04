@@ -38,14 +38,14 @@ def generate_text(input_str, text_len=250, end_of_text_id=EOD_ID, top_random=10,
       next_token_id = choose_from_top(softmax_logits.to('cpu').numpy(), n=top_random)
       if next_token_id == end_of_text_id:
         break
-      elif next_token_id == NEW_LINE_ID and cur_ids[-1] == HEADER_ID and cur_ids[-2] != HEADER_ID:
+      elif next_token_id == NEW_LINE_ID and cur_ids[0][-1] == HEADER_ID and cur_ids[0][-2] != HEADER_ID:
         break
-      elif next_token_id == NEW_LINE_ID and cur_ids[-1] == NEW_LINE_ID:
+      elif next_token_id == NEW_LINE_ID and cur_ids[0][-1] == NEW_LINE_ID:
         break
       cur_ids = torch.cat([cur_ids, torch.ones((1,1)).long().to(device) * next_token_id], dim=1)
     output_list = list(cur_ids.squeeze().to('cpu').numpy())
     output_text = tokenizer.decode(output_list)
-    return output_text
+    return output_text, cur_ids
 
 def choose_from_top(probs, n=5):
     ind = np.argpartition(probs, -n)[-n:]
@@ -54,3 +54,9 @@ def choose_from_top(probs, n=5):
     choice = np.random.choice(n, 1, p = top_prob)
     token_id = ind[choice][0]
     return int(token_id)
+
+def create_starting_text(title):
+  title = " ".join([word.capitalize() for word in title.replace("_", " ").split()])
+  return f""" = {title} =
+
+"""
