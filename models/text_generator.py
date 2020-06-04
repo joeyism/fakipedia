@@ -55,8 +55,11 @@ def choose_from_top(probs, n=5):
     token_id = ind[choice][0]
     return int(token_id)
 
-def create_starting_text(title):
+def clean_starting_text(title):
   title = " ".join([word.capitalize() for word in title.replace("_", " ").split()])
+  return title
+
+def create_starting_text(title):
   return f""" = {title} =
 
 """

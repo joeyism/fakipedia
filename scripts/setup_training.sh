@@ -1,12 +1,12 @@
 #!/bin/bash
 
-MODEL_DIR=fakipedia_model_med
-GPT2_TYPE=gpt2-medium
+export MODEL_DIR=fakipedia_model_med
+export GPT2_TYPE=gpt2-medium
 
 
 # setup instance
 sudo apt -y install unzip
-git clone https://github.com/NVIDIA/apex /tmp
+git clone https://github.com/NVIDIA/apex apex
 cd $_
 pip3 install -v --no-cache-dir ./
 cd -
@@ -28,6 +28,6 @@ python run_language_modeling.py \
 --fp16 \
 --save_steps=-1 \
 --per_gpu_train_batch_size=1 \
---num_train_epochs=5
+--num_train_epochs=3
 
 tar -czf $MODEL_DIR.tar.gz $MODEL_DIR

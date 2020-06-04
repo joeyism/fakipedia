@@ -19,11 +19,12 @@ def index():
 @app.route('/wiki/<title>')
 def article(title):
   logging.info(f"Requesting article: {title}")
-  input_str = text_generator.create_starting_text(title)
+  cleaned_title = text_generator.clean_starting_text(title)
+  input_str = text_generator.create_starting_text(cleaned_title)
   source, cur_ids = text_generator.generate_text(input_str, test=ENV.lower()=='test', text_len=MAX_TEXT_LENGTH)
   source = wikitext_to_html.run(source)
   source = """{% extends "layout.html" %}
-  {% block title %}""" + input_str + """{% endblock %}
+  {% block title %}""" + cleaned_title + """{% endblock %}
 
   {% block content %}
   """ + source + """

@@ -17,7 +17,13 @@ preprocessor_parser = preprocessor.make_parser({})
 siteSubElem = lxml.html.fromstring('<div class="siteSub">From Fakipedia, the fake Wikipedia</div><div class="contentSub"/>')
 
 def preprocess(source):
-  return source.replace("\n ", "\n").replace(" \n", "\n").replace("= ", "=").replace(" =", "=").strip()
+  return source.replace("\n ", "\n") \
+                .replace(" \n", "\n") \
+                .replace("= ", "=") \
+                .replace(" =", "=") \
+                .replace("@ ", "") \
+                .replace(" @", "") \
+                .strip()
 
 def process(source):
   source = source.strip()
