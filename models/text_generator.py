@@ -25,14 +25,14 @@ test_article = """ = Toronto Raptors =
  Founded in 1996, they had to endure Vince Carter before winning the 2018-2019 NBA Championship
 """
 
-def generate_text(input_str, text_len=250, end_of_text_id=EOD_ID, top_random=10, test=False):
+def generate_text(input_str, text_len=250, end_of_text_id=EOD_ID, top_random=10, test=False, memory=1024):
   if test:
     return test_article
   cur_ids = torch.tensor(tokenizer.encode(input_str)).unsqueeze(0).long().to(device)
   model.eval()
   with torch.no_grad():
     for i in tqdm(range(text_len)):
-      outputs = model(cur_ids[:, -1024:], labels=cur_ids[:, -1024:])
+      outputs = model(cur_ids[:, -1*memory:], labels=cur_ids[:, -1*memory:])
       loss, logits = outputs[:2]
       softmax_logits = torch.softmax(logits[0,-1], dim=0)
       next_token_id = choose_from_top(softmax_logits.to('cpu').numpy(), n=top_random)

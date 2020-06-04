@@ -26,6 +26,7 @@ python run_language_modeling.py \
 --do_eval \
 --eval_data_file=wikitext-2-raw/wiki.valid.raw \
 --fp16 \
+--fp16_opt_level 'O3'\
 --save_steps=-1 \
 --per_gpu_train_batch_size=1 \
 --num_train_epochs=3

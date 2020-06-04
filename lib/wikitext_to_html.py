@@ -17,13 +17,17 @@ preprocessor_parser = preprocessor.make_parser({})
 siteSubElem = lxml.html.fromstring('<div class="siteSub">From Fakipedia, the fake Wikipedia</div><div class="contentSub"/>')
 
 def preprocess(source):
-  return source.replace("\n ", "\n") \
+  source = source.replace("\n ", "\n") \
                 .replace(" \n", "\n") \
                 .replace("= ", "=") \
                 .replace(" =", "=") \
                 .replace("@ ", "") \
                 .replace(" @", "") \
                 .strip()
+  source_split = source.split("\n")
+  source_split[0] = source_split[0].replace("==", "=")
+  source = "\n".join(source_split)
+  return source
 
 def process(source):
   source = source.strip()
@@ -35,12 +39,11 @@ def process(source):
 def postprocess(source):
   main_elem = lxml.html.fromstring(source)
   header = main_elem.find(".//h1")
-  if header:
+  if header is not None:
     main_elem.insert(main_elem.index(header) + 1, siteSubElem)
   return lxml.html.tostring(main_elem).decode("utf8")
 
 def run(source):
-  import ipdb; ipdb.set_trace()
   source = preprocess(source)
   source = process(source)
   source = postprocess(source)
