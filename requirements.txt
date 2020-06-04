@@ -4,3 +4,4 @@ torch
 pijnu
 mediawiki-parser
 dataclasses
+flask

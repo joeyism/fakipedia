@@ -17,7 +17,17 @@ EOD_ID = tokenizer.encode("<|endoftext|>")
 NEW_LINE_ID = 198
 HEADER_ID = 796
 
-def generate_text(input_str, text_len=250, end_of_text_id=EOD_ID, top_random=10):
+test_article = """ = Toronto Raptors = 
+
+ Toronto Raptors are the best team in the world
+
+ = = History = = 
+ Founded in 1996, they had to endure Vince Carter before winning the 2018-2019 NBA Championship
+"""
+
+def generate_text(input_str, text_len=250, end_of_text_id=EOD_ID, top_random=10, test=False):
+  if test:
+    return test_article
   cur_ids = torch.tensor(tokenizer.encode(input_str)).unsqueeze(0).long().to(device)
   model.eval()
   with torch.no_grad():
@@ -29,6 +39,8 @@ def generate_text(input_str, text_len=250, end_of_text_id=EOD_ID, top_random=10)
       if next_token_id == end_of_text_id:
         break
       elif next_token_id == NEW_LINE_ID and cur_ids[-1] == HEADER_ID and cur_ids[-2] != HEADER_ID:
+        break
+      elif next_token_id == NEW_LINE_ID and cur_ids[-1] == NEW_LINE_ID:
         break
       cur_ids = torch.cat([cur_ids, torch.ones((1,1)).long().to(device) * next_token_id], dim=1)
     output_list = list(cur_ids.squeeze().to('cpu').numpy())
