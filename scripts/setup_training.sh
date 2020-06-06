@@ -1,5 +1,4 @@
 #!/bin/bash
-
 export MODEL_DIR=fakipedia_model_med
 export GPT2_TYPE=gpt2-medium
 
@@ -26,9 +25,9 @@ python run_language_modeling.py \
 --do_eval \
 --eval_data_file=wikitext-2-raw/wiki.valid.raw \
 --fp16 \
---fp16_opt_level 'O3'\
+--fp16_opt_level=O2 \
 --save_steps=-1 \
---per_gpu_train_batch_size=1 \
+--per_gpu_train_batch_size=4 \
 --num_train_epochs=3
 
 tar -czf $MODEL_DIR.tar.gz $MODEL_DIR

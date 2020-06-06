@@ -3,15 +3,75 @@
   <head>
     {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://en.wikipedia.org/w/load.php?lang=en&modules=ext.cite.styles%7Cext.flaggedRevs.basic%2Cicons%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Cjquery.makeCollapsible.styles%7Cjquery.tablesorter.styles%7Cmediawiki.toc.styles%7Cmediawiki.widgets.styles%7Coojs-ui-core.icons%2Cstyles%7Coojs-ui.styles.indicators%7Cskins.vector.styles.legacy%7Cwikibase.client.init&only=styles&skin=vector">
     <title>{% block title %}{% endblock %} - Fakipedia</title>
     {% endblock %}
   </head>
   <body>
-    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="mw-page-base" class="noprint"></div>
+    <div id="mw-head-base" class="noprint"></div>
+    <div id="content" class="mw-body" role="main">
+        <a id="top"></a>
+        {% block content %}{% endblock %}
+    </div>
+    <div id="mw-navigation">
+        <div id="mw-panel">
+            <div id="p-logo" role="banner">
+                <a title="Visit the main page" class="mw-faki-logo" href="/"></a>
+            </div>
+            <div id="p-navigation" class="vector-menu vector-menu-portal portal portal-first" aria-labelledby="p-navigation-label">
+            <h3 id="p-navigation-label">
+                <span>Navigation</span>
+            </h3>
+            <!-- Please do not use the .body class, it is deprecated. -->
+            <div class="body vector-menu-content">
+                <!-- Please do not use the .menu class, it is deprecated. -->
+                <ul class="vector-menu-content-list"><li id="n-mainpage-description"><a href="/" title="Visit the main page [alt-shift-z]" accesskey="z">Main page</a></li><li id="n-contents"><a href="/" title="Guides to browsing Fakipedia">Contents</a></li><li id="n-currentevents"><a href="/" title="Find background information on current events">Current events</a></li><li id="n-randompage"><a href="/" title="Visit a randomly selected article [alt-shift-x]" accesskey="x">Random article</a></li><li id="n-aboutsite"><a href="/" title="Learn about Fakipedia and how it works">About Fakipedia</a></li><li id="n-contactpage"><a href="/" title="How to contact Fakipedia">Contact us</a></li><li id="n-sitesupport"><a href="/" title="Support us by donating to the Wikimedia Foundation">Donate</a></li><li id="n-shoplink"></li></ul>
+                
+            </div>
+        </div>
+
+
+            <div id="p-interaction" class="vector-menu vector-menu-portal portal" aria-labelledby="p-interaction-label">
+            <h3 id="p-interaction-label">
+                <span>Contribute</span>
+            </h3>
+            <!-- Please do not use the .body class, it is deprecated. -->
+            <div class="body vector-menu-content">
+                <!-- Please do not use the .menu class, it is deprecated. -->
+                <ul class="vector-menu-content-list"><li id="n-help"><a href="/wiki/Help:Contents" title="Guidance on how to use and edit Fakipedia">Help</a></li><li id="n-portal"><a href="/wiki/Fakipedia:Community_portal" title="About the project, what you can do, where to find things">Community portal</a></li><li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes to Fakipedia [alt-shift-r]" accesskey="r">Recent changes</a></li><li id="n-upload"><a href="/wiki/Fakipedia:File_Upload_Wizard" title="Add images or other media for use on Fakipedia">Upload file</a></li></ul>
+                
+            </div>
+        </div>
+
+        <div id="p-tb" class="vector-menu vector-menu-portal portal" aria-labelledby="p-tb-label">
+            <h3 id="p-tb-label">
+                <span>Tools</span>
+            </h3>
+            
+        </div>
+
+        <div id="p-lang" class="vector-menu vector-menu-portal portal" aria-labelledby="p-lang-label"></div>
+
+        <div id="p-wikibase-otherprojects" class="vector-menu vector-menu-portal portal" aria-labelledby="p-wikibase-otherprojects-label">
+            <h3 id="p-wikibase-otherprojects-label">
+                <span>In other projects</span>
+            </h3>
+            
+        </div>
+
+        <div id="p-coll-print_export" class="vector-menu vector-menu-portal portal" aria-labelledby="p-coll-print_export-label">
+            <h3 id="p-coll-print_export-label">
+                <span>Print/export</span>
+            </h3>
+            <!-- Please do not use the .body class, it is deprecated. -->
+            <div class="body vector-menu-content"></div>
+        </div>
+
+
+        </div>
+            </div>
     <div id="footer">
-      {% block footer %}
-      &copy; Copyright 2010 by <a href="http://joeyism.com">joeyism</a>.
-      {% endblock %}
     </div>
   </body>
 </html>

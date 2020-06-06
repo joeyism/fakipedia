@@ -21,8 +21,8 @@ def preprocess(source):
                 .replace(" \n", "\n") \
                 .replace("= ", "=") \
                 .replace(" =", "=") \
-                .replace("@ ", "") \
-                .replace(" @", "") \
+                .replace("@ ", " ") \
+                .replace(" @", " ") \
                 .strip()
   source_split = source.split("\n")
   source_split[0] = source_split[0].replace("==", "=")

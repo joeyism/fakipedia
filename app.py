@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, Markup, request, jsonify, render_template_string
+from flask import Flask, render_template, Markup, request, jsonify, render_template_string, redirect, url_for
 from tqdm import tqdm
 from models import text_generator
 from lib import wikitext_to_html
@@ -17,6 +17,13 @@ def index():
       "index.html"
   )
 
+@app.route('/redirect')
+def redirect_search():
+  search = request.args.get('search')
+  search = search.replace(" ", "_")
+  logging.info(f"Redirecting {search}")
+  return redirect(url_for('article', title=search))
+
 @app.route('/wiki/<title>')
 def article(title):
   logging.info(f"Requesting article: {title}")
@@ -26,7 +33,7 @@ def article(title):
 
   cleaned_title = text_generator.clean_starting_text(title)
   input_str = text_generator.create_starting_text(cleaned_title)
-  source, cur_ids = text_generator.generate_text(input_str, test=ENV.lower()=='test', text_len=text_len)
+  source = text_generator.generate_text(input_str, test=ENV.lower()=='test', text_len=text_len)
   source = wikitext_to_html.run(source)
   source = """{% extends "layout.html" %}
   {% block title %}""" + cleaned_title + """{% endblock %}
