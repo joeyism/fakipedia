@@ -5,3 +5,5 @@ pijnu
 mediawiki-parser
 dataclasses
 flask
+flask_sqlalchemy
+psycopg2-binary

@@ -3,9 +3,13 @@ from flask import Flask, render_template, Markup, request, jsonify, render_templ
 from tqdm import tqdm
 from models import text_generator
 from lib import wikitext_to_html
+from flask_sqlalchemy import SQLAlchemy
 import logging
-
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DB_URL")
+db = SQLAlchemy(app)
+from lib import objects
+
 ENV = os.getenv("ENV")
 MAX_TEXT_LENGTH = os.getenv("MAX_TEXT_LENGTH", 250)
 DEFAULT_MODEL_MEMORY = os.getenv("DEFAULT_MODEL_MEMORY", 1024)
@@ -27,19 +31,26 @@ def redirect_search():
 @app.route('/wiki/<title>')
 def article(title):
   logging.info(f"Requesting article: {title}")
-  text_len = request.args.get("len") or MAX_TEXT_LENGTH
+  text_len = request.args.get("len", 250) or MAX_TEXT_LENGTH
   text_len = int(text_len)
-  memory = request.args.get("memory") or DEFAULT_MODEL_MEMORY
+  memory = request.args.get("memory", 1024) or DEFAULT_MODEL_MEMORY
+  memory = int(memory)
 
-  cleaned_title = text_generator.clean_starting_text(title)
-  input_str = text_generator.create_starting_text(cleaned_title)
-  source = text_generator.generate_text(input_str, test=ENV.lower()=='test', text_len=text_len)
-  source = wikitext_to_html.run(source)
+  page = objects.GeneratedPage.get_page_by_query(title, text_len, memory)
+  if page is None:
+    cleaned_title = text_generator.clean_starting_text(title)
+    cleaned_title = text_generator.create_starting_text(cleaned_title)
+    source = text_generator.generate_text(cleaned_title, test=ENV.lower()=='test', text_len=text_len, memory=memory)
+    source = wikitext_to_html.run(source)
+
+    page = objects.GeneratedPage(title, cleaned_title, source, text_len, memory)
+    page.save()
+
   source = """{% extends "layout.html" %}
-  {% block title %}""" + cleaned_title + """{% endblock %}
+  {% block title %}""" + page.title + """{% endblock %}
 
   {% block content %}
-  """ + source + """
+  """ + page.body + """
   {% endblock %}
   </div>
   """
