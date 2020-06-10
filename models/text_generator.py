@@ -4,6 +4,8 @@ import numpy as np
 
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
 from tqdm import tqdm
+from lib import objects
+from lib import wikitext_to_html
 
 device = 'cpu'
 if torch.cuda.is_available():
@@ -16,6 +18,7 @@ model = model.to(device)
 EOD_ID = tokenizer.encode("<|endoftext|>")
 NEW_LINE_ID = 198
 HEADER_ID = 796
+ENV = os.getenv("ENV")
 
 test_article = """ = Toronto Raptors = 
 
@@ -63,3 +66,14 @@ def create_starting_text(title):
   return f""" = {title} =
 
 """
+
+def generate_page(title, text_len, memory):
+  page = objects.GeneratedPage.get_page_by_query(title, text_len, memory)
+  if page is None:
+    cleaned_title = clean_starting_text(title)
+    cleaned_title = create_starting_text(cleaned_title)
+    source = generate_text(cleaned_title, test=ENV.lower()=='test', text_len=text_len, memory=memory)
+    source = wikitext_to_html.run(source)
+    page = objects.GeneratedPage(title, cleaned_title, source, text_len, memory)
+    page.save()
+  return page

@@ -144,3 +144,26 @@ h3 {
     width: 40px;
     height: 4%;
 }
+
+.main-option-input {
+    width: 60px;
+    text-align: right;
+    unicode-bidi: -webkit-isolate;
+    color: #36c;
+    background-color: #f8f9fa;
+    font: inherit;
+    margin: 0;
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid #a2a9b1;
+    box-shadow: inset 0 0 0 1px #fff;
+    vertical-align: middle;
+    -webkit-appearance: textfield;
+    border-radius: 2px 0 0 2px;
+    line-height: 1.6;
+    transition: background .1s ease,border-color .1s ease,box-shadow .1s ease;
+}
+
+.main-option-div {
+    margin-top: 4%
+}

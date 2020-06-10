@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <script>
+    fetch("{{ model_url | safe }}", { redirect: 'follow' }).then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        }
+    })
+    </script>
+  </head>
+  <body>
+    Loading...  
+  </body>
+</html>
