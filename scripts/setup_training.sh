@@ -1,6 +1,6 @@
 #!/bin/bash
-export MODEL_DIR=fakipedia_model_med
-export GPT2_TYPE=gpt2-medium
+export MODEL_DIR=fakipedia_distil
+export GPT2_TYPE=distilgpt2
 
 
 # setup instance
