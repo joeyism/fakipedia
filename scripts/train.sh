@@ -12,6 +12,6 @@ python run_language_modeling.py \
 --eval_data_file=wikitext-2-raw/wiki.valid.raw \
 --save_steps=-1 \
 --per_gpu_train_batch_size=2 \
---num_train_epochs=3
+--num_train_epochs=6
 
 tar -czf $MODEL_DIR.tar.gz $MODEL_DIR

@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<h1>About Us</h1>
+<div>
+Fakipedia is an effort created by <a href="http://www.joeyism.com">me</a>. In the era of "Fake News", it seemed poetic to have a "Fake Wikipedia". However, I made an effort to show that every article on this site is generated, so you should definitely not be using it as a source of truth.
+</div>
+
+<h2>How it Works</h2>
+<div>
+  Most of the work was done by <a href="https://huggingface.co/">Hugging Face</a> and their amazing crew. I took their <a href="https://huggingface.co/distilgpt2">distilgpt2</a> and tuned it on WikiText-2.
+</div>
+{% endblock %}

@@ -110,6 +110,7 @@ h3 {
     line-height: 1.6;
     transition: background .1s ease,border-color .1s ease,box-shadow .1s ease;
 }
+
 .main-search-btn {
     font: inherit;
     overflow: visible;
@@ -166,4 +167,13 @@ h3 {
 
 .main-option-div {
     margin-top: 4%
+}
+
+.loading-div {
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Linux Libertine','Georgia','Times',serif;
 }

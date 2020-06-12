@@ -67,13 +67,15 @@ def create_starting_text(title):
 
 """
 
-def generate_page(title, text_len, memory):
+def generate_page(title, text_len, memory, cutoff=True):
   page = objects.GeneratedPage.get_page_by_query(title, text_len, memory)
   if page is None:
     cleaned_title = clean_starting_text(title)
-    cleaned_title = create_starting_text(cleaned_title)
-    source = generate_text(cleaned_title, test=ENV.lower()=='test', text_len=text_len, memory=memory)
+    starting_text = create_starting_text(cleaned_title)
+    source = generate_text(starting_text, test=ENV.lower()=='test', text_len=text_len, memory=memory)
     source = wikitext_to_html.run(source)
+    if cutoff:
+      source = ". ".join(source.split(". ")[:-1] + [""])
     page = objects.GeneratedPage(title, cleaned_title, source, text_len, memory)
     page.save()
   return page

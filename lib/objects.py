@@ -28,3 +28,7 @@ class GeneratedPage(db.Model):
   @classmethod
   def get_page_by_query(cls, url, length, memory):
     return db.session.query(GeneratedPage).filter_by(url=url, length=length, memory=memory).first()
+
+  @classmethod
+  def get_random_page(cls):
+    return db.session.query(GeneratedPage).first()
