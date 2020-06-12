@@ -1,18 +1,14 @@
-import os
 from flask import Flask, render_template, Markup, request, jsonify, render_template_string, redirect, url_for, Response
 from tqdm import tqdm
 from flask_sqlalchemy import SQLAlchemy
 import logging
 from models import text_generator
 from lib import objects
+from lib import constants as c
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DB_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = c.DB_URL
 db = SQLAlchemy(app)
-
-
-MAX_TEXT_LENGTH = os.getenv("MAX_TEXT_LENGTH", 1024)
-DEFAULT_MODEL_MEMORY = os.getenv("DEFAULT_MODEL_MEMORY", 200)
 
 @app.route('/')
 @app.route('/index')

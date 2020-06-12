@@ -25,7 +25,17 @@ def preprocess(source):
                 .replace(" @", " ") \
                 .strip()
   source_split = source.split("\n")
+  # fixing title
   source_split[0] = source_split[0].replace("==", "=")
+
+  for i, sentence in enumerate(source_split):
+    if "=" not in sentence:
+      continue
+    name = "".join(sentence.split("="))
+    begin = sentence.split(name)[0]
+    sentence = begin + name + begin
+    source_split[i] = sentence
+
   source = "\n".join(source_split)
   return source
 

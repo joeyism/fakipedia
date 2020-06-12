@@ -1,4 +1,3 @@
-import os
 import torch
 import numpy as np
 
@@ -6,19 +5,19 @@ from transformers import GPT2Tokenizer, GPT2LMHeadModel
 from tqdm import tqdm
 from lib import objects
 from lib import wikitext_to_html
+from lib import constants as c
 
 device = 'cpu'
 if torch.cuda.is_available():
     device = 'cuda'
 
-GPT2_NAME = os.getenv('GPT2_NAME', 'gpt2-medium')
-tokenizer = GPT2Tokenizer.from_pretrained(GPT2_NAME)
-model = GPT2LMHeadModel.from_pretrained(GPT2_NAME)
+tokenizer = GPT2Tokenizer.from_pretrained(c.GPT2_NAME)
+model = GPT2LMHeadModel.from_pretrained(c.GPT2_NAME)
 model = model.to(device)
-EOD_ID = tokenizer.encode("<|endoftext|>")
+EOD_ID = tokenizer.encode("<|endoftext|>")[0]
+EQUAL_ID = tokenizer.encode(" = ")[0]
 NEW_LINE_ID = 198
 HEADER_ID = 796
-ENV = os.getenv("ENV")
 
 test_article = """ = Toronto Raptors = 
 
@@ -28,7 +27,7 @@ test_article = """ = Toronto Raptors =
  Founded in 1996, they had to endure Vince Carter before winning the 2018-2019 NBA Championship
 """
 
-def generate_text(input_str, text_len=250, end_of_text_id=EOD_ID, top_random=10, test=False, memory=1024):
+def generate_text(input_str, text_len=c.MAX_TEXT_LENGTH, end_of_text_id=EOD_ID, top_random=5, test=False, memory=c.DEFAULT_MODEL_MEMORY):
   if test:
     return test_article
   cur_ids = torch.tensor(tokenizer.encode(input_str)).unsqueeze(0).long().to(device)
@@ -51,12 +50,14 @@ def generate_text(input_str, text_len=250, end_of_text_id=EOD_ID, top_random=10,
     return output_text
 
 def choose_from_top(probs, n=5):
-    ind = np.argpartition(probs, -n)[-n:]
-    top_prob = probs[ind]
-    top_prob = top_prob / np.sum(top_prob) # Normalize
-    choice = np.random.choice(n, 1, p = top_prob)
-    token_id = ind[choice][0]
-    return int(token_id)
+  ind = np.argpartition(probs, -n)[-n:]
+  top_prob = probs[ind]
+  top_prob = top_prob / np.sum(top_prob) # Normalize
+  if EQUAL_ID in ind and np.where(ind == EQUAL_ID)[0][0] == np.argmax(top_prob): # return =
+    return EQUAL_ID
+  choice = np.random.choice(n, 1, p = top_prob)
+  token_id = ind[choice][0]
+  return int(token_id)
 
 def clean_starting_text(title):
   title = " ".join([word.capitalize() for word in title.replace("_", " ").split()])
@@ -72,7 +73,7 @@ def generate_page(title, text_len, memory, cutoff=True):
   if page is None:
     cleaned_title = clean_starting_text(title)
     starting_text = create_starting_text(cleaned_title)
-    source = generate_text(starting_text, test=ENV.lower()=='test', text_len=text_len, memory=memory)
+    source = generate_text(starting_text, test=c.ENV.lower()=='test', text_len=text_len, memory=memory)
     source = wikitext_to_html.run(source)
     if cutoff:
       source = ". ".join(source.split(". ")[:-1] + [""])
