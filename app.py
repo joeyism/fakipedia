@@ -14,8 +14,8 @@ db = SQLAlchemy(app)
 @app.route('/index')
 def index():
   return render_template("index.html",
-      DEFAULT_TEXT_LENGTH=MAX_TEXT_LENGTH,
-      DEFAULT_MODEL_MEMORY=DEFAULT_MODEL_MEMORY
+      DEFAULT_TEXT_LENGTH=c.MAX_TEXT_LENGTH,
+      DEFAULT_MODEL_MEMORY=c.DEFAULT_MODEL_MEMORY
       )
 
 @app.route('/redirect')
@@ -36,9 +36,9 @@ def redirect_search():
 def generate_wiki():
   logging.info(request.args)
   search = request.args.get('search')
-  text_len = request.args.get('len') or MAX_TEXT_LENGTH
+  text_len = request.args.get('len') or c.MAX_TEXT_LENGTH
   text_len = int(text_len)
-  memory = request.args.get('memory') or DEFAULT_MODEL_MEMORY
+  memory = request.args.get('memory') or c.DEFAULT_MODEL_MEMORY
   memory = int(memory)
 
   page = text_generator.generate_page(search, text_len, memory)
@@ -47,9 +47,9 @@ def generate_wiki():
 @app.route('/wiki/<title>')
 def article(title):
   logging.info(f"Requesting article: {title}")
-  text_len = request.args.get("len") or MAX_TEXT_LENGTH
+  text_len = request.args.get("len") or c.MAX_TEXT_LENGTH
   text_len = int(text_len)
-  memory = request.args.get("memory") or DEFAULT_MODEL_MEMORY
+  memory = request.args.get("memory") or c.DEFAULT_MODEL_MEMORY
   memory = int(memory)
 
   page = text_generator.generate_page(title, text_len, memory)
