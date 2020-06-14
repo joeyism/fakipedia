@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block title %}How To Use{% endblock %}
+
+{% block content %}
+<h1>How To Use</h1>
+<div>
+    <div>Usage is pretty simple. Just search for a text, and it'll treat it as though it was the title of an article. The more detailed the article, the better. For example, "<b>Toronto</b>" may generate an article about a city, or a sports franchise. "<b>Toronto Raptors (NBA team)</b>" will more likely generate an NBA team. "<b>Toronto, Ontario (City)</b>" may more likely generate an article about a city. </div>
+    </br>
+    <div>Once a page is generated, it'll show up on your browser. Depending on the options that are set, it may take quite a bit of time. The page with the specific options are saved, so you can revisit at any point. Because they're saved, the next time you try to generate a page with those specific options, it'll pull it from the database instead of generating a new one</div>
+
+</div>
+
+<h2>Options</h2>
+<h3>Length</h3>
+<div>Sets the maximum text length. The longer you set it, the longer it takes to generate</div>
+
+<h3>Memory</h3>
+<div>How far back in words it tries to read to generate the next word. The higher the number, the further back it goes, and the longer it takes to generate. Max is 1024 words</div>
+{% endblock %}

@@ -2,6 +2,7 @@
 <html>
   <head>
     {% block head %}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://en.wikipedia.org/w/load.php?lang=en&modules=ext.cite.styles%7Cext.flaggedRevs.basic%2Cicons%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Cjquery.makeCollapsible.styles%7Cjquery.tablesorter.styles%7Cmediawiki.toc.styles%7Cmediawiki.widgets.styles%7Coojs-ui-core.icons%2Cstyles%7Coojs-ui.styles.indicators%7Cskins.vector.styles.legacy%7Cwikibase.client.init&only=styles&skin=vector">
     <title>{% block title %}{% endblock %} - Fakipedia</title>
@@ -9,7 +10,15 @@
   </head>
   <body>
     <div id="mw-page-base" class="noprint"></div>
-    <div id="mw-head-base" class="noprint"></div>
+    <div id="mw-head-base" class="noprint">
+
+    <form action="/redirect">
+      <div class="layout-search-div">
+        <input id="searchInput" class="layout-search-input" name="search" type="search" size="20" autofocus="autofocus" accesskey="F" dir="auto" autocomplete="off" list="suggestions">
+        <input class="layout-search-btn" type="submit">
+      </div>
+    </form>
+    </div>
     <div id="content" class="mw-body" role="main">
         <a id="top"></a>
         {% block content %}{% endblock %}
@@ -28,12 +37,11 @@
                 <!-- Please do not use the .menu class, it is deprecated. -->
                 <ul class="vector-menu-content-list">
                   <li id="n-mainpage-description"><a href="/" title="Visit the main page [alt-shift-z]" accesskey="z">Main page</a></li>
-                  <li id="n-contents"><a href="/" title="Guides to browsing Fakipedia">Contents</a></li>
-                  <li id="n-currentevents"><a href="/" title="Find background information on current events">Current events</a></li>
-                  <li id="n-randompage"><a href="/" title="Visit a randomly selected article [alt-shift-x]" accesskey="x">Random article</a></li>
-                  <li id="n-aboutsite"><a href="/" title="Learn about Fakipedia and how it works">About Fakipedia</a></li>
-                  <li id="n-contactpage"><a href="/" title="How to contact Fakipedia">Contact us</a></li>
-                  <li id="n-sitesupport"><a href="/" title="Support us by donating to the Wikimedia Foundation">Donate</a></li><li id="n-shoplink"></li></ul>
+                  <li id="n-help"><a href="/help" title="Guides to browsing Fakipedia">Help</a></li>
+                  <li id="n-randompage"><a href="/random" title="Visit a randomly selected article" accesskey="x">Random article</a></li>
+                  <li id="n-aboutsite"><a href="/about_us" title="Learn about Fakipedia and how it works">About Fakipedia</a></li>
+                  <li id="n-contactpage"><a href="https://github.com/joeyism/fakipedia" title="How to contact Fakipedia">Contact us</a></li>
+                  <li id="n-sitesupport"><a href="https://www.buymeacoffee.com/joeyism" title="Support us by donating to me">Donate</a></li>
             </div>
         </div>
 

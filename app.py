@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Markup, request, jsonify, render_template_string, redirect, url_for, Response
+from flask import Flask, render_template, Markup, request, jsonify, render_template_string, redirect, url_for, Response, send_from_directory
 from tqdm import tqdm
 from flask_sqlalchemy import SQLAlchemy
 import logging
@@ -9,6 +9,10 @@ from lib import constants as c
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = c.DB_URL
 db = SQLAlchemy(app)
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
 
 @app.route('/')
 @app.route('/index')
@@ -67,6 +71,10 @@ def article(title):
 @app.route('/about_us')
 def about_us():
   return render_template("about_us.html")
+
+@app.route('/help')
+def help():
+  return render_template("help.html")
 
 @app.route('/random')
 def random():

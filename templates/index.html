@@ -1,5 +1,6 @@
 <html>
   <head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Fakipedia</title>
   </head>
@@ -15,9 +16,9 @@
 
         <div class="main-option-div">
             Length:
-            <input id="lengthInput" class="main-option-input" name="len" type="number" size="20" dir="auto" autocomplete="off" value="{{ DEFAULT_TEXT_LENGTH }}">
+            <input id="lengthInput" class="main-option-input" name="len" type="number" size="20" dir="auto" autocomplete="off"  min="10" value="{{ DEFAULT_TEXT_LENGTH }}">
             Memory: 
-            <input id="lengthInput" class="main-option-input" name="memory" type="number" size="20" dir="auto" autocomplete="off" value="{{ DEFAULT_MODEL_MEMORY }}">
+            <input id="lengthInput" class="main-option-input" name="memory" type="number" size="20" dir="auto" autocomplete="off" min="10" max="1024" value="{{ DEFAULT_MODEL_MEMORY }}">
         </div>
     </form>
   </body>
